@@ -5,7 +5,6 @@ exclusive = true
 dependencies[] = block
 dependencies[] = comment
 dependencies[] = contextual
-dependencies[] = dashboard
 dependencies[] = help
 dependencies[] = image
 dependencies[] = list
