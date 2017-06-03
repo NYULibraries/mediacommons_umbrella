@@ -83,20 +83,7 @@ function mediacommons_umbrella_install() {
       'pages' => '',
       'cache' => -1,
       ),
-     // View: Delta 1 is twitter widget
-    array(
-      'module' => 'block',
-      'delta' => '1',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => -1,
-      'region' => 'umb_homepage_sidebar',
-      'pages' => '',
-      'cache' => -1,
-      ),
-
-
-array(
+      array(
         'module' => 'menu',
         'delta' => 'menu-mcglobalnav',
         'theme' => $default_theme,
