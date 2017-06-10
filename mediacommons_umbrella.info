@@ -6,10 +6,8 @@ exclusive = true
 dependencies[] = mediacommons_apis
 dependencies[] = mediacommons_blocks
 dependencies[] = mediacommons_content_types
-dependencies[] = mediacommons_user_setup
 dependencies[] = mediacommons_user_layout
 dependencies[] = mediacommons_ds_settings
 dependencies[] = mediacommons_globalnav
 dependencies[] = mediacommons_utilities
-
 dependencies[] = mediacommons_homepage_umbrella
