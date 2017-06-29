@@ -30,6 +30,7 @@ function mediacommons_umbrella_install() {
       'region' => 'content',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'search',
@@ -40,6 +41,7 @@ function mediacommons_umbrella_install() {
       'region' => 'search',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
   	  'module' => 'mediacommons_blocks',
@@ -50,6 +52,7 @@ function mediacommons_umbrella_install() {
       'region' => 'footer',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'mediacommons_blocks',
@@ -85,7 +88,7 @@ function mediacommons_umbrella_install() {
       'cache' => -1,
       'pages' => '<front>',
       'visibility' => 1,
-      ),
+    ),
     array(
       'module' => 'menu',
       'delta' => 'menu-mcglobalnav',
@@ -95,6 +98,7 @@ function mediacommons_umbrella_install() {
       'region' => 'globalnav',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'system',
@@ -105,6 +109,7 @@ function mediacommons_umbrella_install() {
       'region' => 'help',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'node',
@@ -115,6 +120,7 @@ function mediacommons_umbrella_install() {
       'region' => 'dashboard_main',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'system',
@@ -125,6 +131,7 @@ function mediacommons_umbrella_install() {
       'region' => 'content',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'system',
@@ -135,6 +142,7 @@ function mediacommons_umbrella_install() {
       'region' => 'help',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'user',
@@ -145,6 +153,7 @@ function mediacommons_umbrella_install() {
       'region' => 'content',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'user',
@@ -155,6 +164,7 @@ function mediacommons_umbrella_install() {
       'region' => 'dashboard_sidebar',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'search',
@@ -165,25 +175,27 @@ function mediacommons_umbrella_install() {
       'region' => 'dashboard_sidebar',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
   );
 
-  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
+  $fields = array(
+    'module', 
+    'delta', 
+    'theme', 
+    'status', 
+    'weight', 
+    'region', 
+    'pages', 
+    'cache', 
+    'visibility'
+  );
 
-  foreach ($blocks as $block) {
-    $query->values($block);
-  }
+  $query = db_insert('block')->fields($fields);
 
+  foreach ($blocks as $block) $query->values($block);
+  
   $query->execute();
-
-  // Enable user picture support and set the default to a square thumbnail option.
-  variable_set('user_pictures', '1');
-  variable_set('user_picture_dimensions', '1024x1024');
-  variable_set('user_picture_file_size', '800');
-  variable_set('user_picture_style', 'thumbnail');
-
-  // Allow visitor account creation with administrative approval.
-  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
 
   // Create a Home link in the main menu.
 
@@ -197,8 +209,6 @@ function mediacommons_umbrella_install() {
 
   // Update the menu router information.
   menu_rebuild();
-
-
 
   // Enable the admin theme.
   db_update('system')
@@ -214,13 +224,24 @@ function mediacommons_umbrella_install() {
     ->condition('name', 'zen')
     ->execute();
 
-
   // Enable the mediacommons theme.
   db_update('system')
     ->fields(array('status' => 1))
     ->condition('type', 'theme')
     ->condition('name', $default_theme)
     ->execute();
+
+  // Enable user picture support and set the default to a square thumbnail option.
+  variable_set('user_pictures', '1');
+
+  variable_set('user_picture_dimensions', '1024x1024');
+
+  variable_set('user_picture_file_size', '800');
+
+  variable_set('user_picture_style', 'thumbnail');
+
+  // Allow visitor account creation with administrative approval.
+  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
 
   variable_set('admin_theme',  $admin_theme);
 
