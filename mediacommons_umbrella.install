@@ -58,8 +58,9 @@ function mediacommons_umbrella_install() {
       'status' => 1,
       'weight' => 0,
       'region' => 'umb_homepage_sidebar',
-      'pages' => '',
       'cache' => -1,
+      'pages' => '<front>',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
     ),
     // View: Single Hub latest
     array(
@@ -69,8 +70,9 @@ function mediacommons_umbrella_install() {
       'status' => 1,
       'weight' => 0,
       'region' => 'umb_homepage_top',
-      'pages' => '',
       'cache' => -1,
+      'pages' => '<front>',      
+      'visibility' => BLOCK_VISIBILITY_LISTED,
     ),
     // View: 6 most recent FPP
     array(
@@ -80,20 +82,20 @@ function mediacommons_umbrella_install() {
       'status' => 1,
       'weight' => 0,
       'region' => 'umb_homepage_bottom',
+      'cache' => -1,
+      'pages' => '<front>',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      ),
+    array(
+      'module' => 'menu',
+      'delta' => 'menu-mcglobalnav',
+      'theme' => $default_theme,
+      'status' => 1,
+      'weight' => 0,
+      'region' => 'globalnav',
       'pages' => '',
       'cache' => -1,
-      ),
-      array(
-        'module' => 'menu',
-        'delta' => 'menu-mcglobalnav',
-        'theme' => $default_theme,
-        'status' => 1,
-        'weight' => 0,
-        'region' => 'globalnav',
-        'pages' => '',
-        'cache' => -1,
-      ),
-
+    ),
     array(
       'module' => 'system',
       'delta' => 'help',
