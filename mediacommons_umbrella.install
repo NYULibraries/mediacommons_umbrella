@@ -60,7 +60,7 @@ function mediacommons_umbrella_install() {
       'region' => 'umb_homepage_sidebar',
       'cache' => -1,
       'pages' => '<front>',
-      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'visibility' => 1,
     ),
     // View: Single Hub latest
     array(
@@ -72,7 +72,7 @@ function mediacommons_umbrella_install() {
       'region' => 'umb_homepage_top',
       'cache' => -1,
       'pages' => '<front>',      
-      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'visibility' => 1,
     ),
     // View: 6 most recent FPP
     array(
@@ -84,7 +84,7 @@ function mediacommons_umbrella_install() {
       'region' => 'umb_homepage_bottom',
       'cache' => -1,
       'pages' => '<front>',
-      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'visibility' => 1,
       ),
     array(
       'module' => 'menu',
