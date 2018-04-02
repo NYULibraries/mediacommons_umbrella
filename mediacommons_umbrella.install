@@ -55,7 +55,7 @@ function mediacommons_umbrella_install() {
       'visibility' => 0,
     ),
     array(
-      'module' => 'mediacommons_blocks',
+      'module' => 'mediacommons_fieldguide',
       'delta' => 'mc_fieldguide',
       'theme' => $default_theme,
       'status' => 1,
