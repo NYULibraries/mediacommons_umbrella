@@ -30,6 +30,7 @@ function mediacommons_umbrella_install() {
       'region' => 'content',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'search',
@@ -40,6 +41,7 @@ function mediacommons_umbrella_install() {
       'region' => 'search',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
   	  'module' => 'mediacommons_blocks',
@@ -50,16 +52,18 @@ function mediacommons_umbrella_install() {
       'region' => 'footer',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
-      'module' => 'mediacommons_blocks',
+      'module' => 'mediacommons_fieldguide',
       'delta' => 'mc_fieldguide',
       'theme' => $default_theme,
       'status' => 1,
       'weight' => 0,
       'region' => 'umb_homepage_sidebar',
-      'pages' => '',
       'cache' => -1,
+      'pages' => '<front>',
+      'visibility' => 1,
     ),
     // View: Single Hub latest
     array(
@@ -69,8 +73,9 @@ function mediacommons_umbrella_install() {
       'status' => 1,
       'weight' => 0,
       'region' => 'umb_homepage_top',
-      'pages' => '',
       'cache' => -1,
+      'pages' => '<front>',      
+      'visibility' => 1,
     ),
     // View: 6 most recent FPP
     array(
@@ -80,33 +85,21 @@ function mediacommons_umbrella_install() {
       'status' => 1,
       'weight' => 0,
       'region' => 'umb_homepage_bottom',
-      'pages' => '',
       'cache' => -1,
-      ),
-     // View: Delta 1 is twitter widget
-    array(
-      'module' => 'block',
-      'delta' => '1',
-      'theme' => $default_theme,
-      'status' => 1,
-      'weight' => -1,
-      'region' => 'umb_homepage_sidebar',
-      'pages' => '',
-      'cache' => -1,
-      ),
-
-
-array(
-        'module' => 'menu',
-        'delta' => 'menu-mcglobalnav',
-        'theme' => $default_theme,
-        'status' => 1,
-        'weight' => 0,
-        'region' => 'globalnav',
-        'pages' => '',
-        'cache' => -1,
-      ),
-
+      'pages' => '<front>',
+      'visibility' => 1,
+    ),
+    //array(
+    //  'module' => 'menu',
+    //  'delta' => 'menu-mcglobalnav',
+    //  'theme' => $default_theme,
+    //  'status' => 1,
+    //  'weight' => 0,
+    //  'region' => 'globalnav',
+    //  'pages' => '',
+    //  'cache' => -1,
+    //  'visibility' => 0,
+    //),
     array(
       'module' => 'system',
       'delta' => 'help',
@@ -116,6 +109,7 @@ array(
       'region' => 'help',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'node',
@@ -126,6 +120,7 @@ array(
       'region' => 'dashboard_main',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'system',
@@ -136,6 +131,7 @@ array(
       'region' => 'content',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'system',
@@ -146,6 +142,7 @@ array(
       'region' => 'help',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'user',
@@ -156,6 +153,7 @@ array(
       'region' => 'content',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'user',
@@ -166,6 +164,7 @@ array(
       'region' => 'dashboard_sidebar',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
     array(
       'module' => 'search',
@@ -176,25 +175,27 @@ array(
       'region' => 'dashboard_sidebar',
       'pages' => '',
       'cache' => -1,
+      'visibility' => 0,
     ),
   );
 
-  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
+  $fields = array(
+    'module', 
+    'delta', 
+    'theme', 
+    'status', 
+    'weight', 
+    'region', 
+    'pages', 
+    'cache', 
+    'visibility'
+  );
 
-  foreach ($blocks as $block) {
-    $query->values($block);
-  }
+  $query = db_insert('block')->fields($fields);
 
+  foreach ($blocks as $block) $query->values($block);
+  
   $query->execute();
-
-  // Enable user picture support and set the default to a square thumbnail option.
-  variable_set('user_pictures', '1');
-  variable_set('user_picture_dimensions', '1024x1024');
-  variable_set('user_picture_file_size', '800');
-  variable_set('user_picture_style', 'thumbnail');
-
-  // Allow visitor account creation with administrative approval.
-  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
 
   // Create a Home link in the main menu.
 
@@ -208,8 +209,6 @@ array(
 
   // Update the menu router information.
   menu_rebuild();
-
-
 
   // Enable the admin theme.
   db_update('system')
@@ -225,13 +224,24 @@ array(
     ->condition('name', 'zen')
     ->execute();
 
-
   // Enable the mediacommons theme.
   db_update('system')
     ->fields(array('status' => 1))
     ->condition('type', 'theme')
     ->condition('name', $default_theme)
     ->execute();
+
+  // Enable user picture support and set the default to a square thumbnail option.
+  variable_set('user_pictures', '1');
+
+  variable_set('user_picture_dimensions', '1024x1024');
+
+  variable_set('user_picture_file_size', '800');
+
+  variable_set('user_picture_style', 'thumbnail');
+
+  // Allow visitor account creation with administrative approval.
+  variable_set('user_register', USER_REGISTER_VISITORS_ADMINISTRATIVE_APPROVAL);
 
   variable_set('admin_theme',  $admin_theme);
 
